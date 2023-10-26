@@ -1,9 +1,33 @@
 import io
 
-from .models import Woman
+from .models import Woman, Category
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+
+
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('title',)
+
+
+class WomanCategorySerializer(serializers.ModelSerializer):
+    category = CategorySerializer()
+    # category = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Woman
+        fields = ('title', 'content', 'category')
+
+    def create(self, validated_data):
+        category_data = validated_data.pop('category')
+        category = Category.objects.create(**category_data)
+        woman = Woman.objects.create(category=category, **validated_data)
+        return woman
+
 
 # Model serializer
 class WomanSerializer(serializers.ModelSerializer):

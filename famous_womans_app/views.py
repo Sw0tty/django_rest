@@ -4,7 +4,13 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework.response import Response
 from .models import Woman, Category
-from .serializers import WomanSerializer
+from .serializers import WomanSerializer, WomanCategorySerializer
+
+
+class WomanCategoryAPIView(generics.CreateAPIView):
+    model = Category
+    serializer_class = WomanCategorySerializer
+
 
 # With generic. ListCreateAPIView (post, get)
 class WomenListAPIView(generics.ListCreateAPIView):
