@@ -15,7 +15,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class WomanCategorySerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    category = CategorySerializer(many=True, read_only=True)
     # category = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
